@@ -13,6 +13,7 @@
 | `styles/faber.css` | Стиль сцен (цвета, шрифты, плашки, субтитры) |
 | `render/faber.js` | Помощники для сцен: появление, субтитры, счётчики |
 | `render/render.js` | Рендер и автопроверки |
+| `render/cues.js` | Тайминги реплик по паузам в озвучке |
 | `videos/<id>/scene.html` | Сцена одного ролика (+ сценарий и озвучка рядом) |
 | `assets/fonts` | Шрифты Inter и DejaVu Sans Mono (свободные лицензии) |
 
@@ -20,8 +21,9 @@
 
 1. Сценарий по шаблону из `CLAUDE.md` → `videos/<id>/script.md`.
 2. Сцена → `videos/<id>/scene.html` (образец: `videos/000_test/scene.html`). Длительность — в `<meta name="duration">`.
-3. Озвучка → `videos/<id>/voice.mp3`.
-4. Рендер:
+3. Озвучка → `videos/<id>/voice.mp3` (реплики через пустую строку — так между ними паузы длиннее).
+   Тайминги сцены под голос: `node render/cues.js videos/<id>/voice.mp3 <число_реплик>` → `cues.json`.
+4. Рендер (voice.mp3 рядом со сценой подхватывается сам):
 
 ```bash
 npm install          # один раз

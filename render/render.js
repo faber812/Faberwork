@@ -27,6 +27,9 @@ function args() {
   for (let i = 1; i < a.length; i += 2) o[a[i].replace(/^--/, "")] = a[i + 1];
   const id = path.basename(path.dirname(o.scene));
   o.out = path.resolve(o.out || path.join(__dirname, "..", "out", `${id}.mp4`));
+  // voice.mp3 рядом со сценой подхватывается автоматически
+  const auto = path.join(path.dirname(o.scene), "voice.mp3");
+  if (!o.voice && fs.existsSync(auto)) o.voice = auto;
   for (const k of ["voice", "music"]) if (o[k]) o[k] = path.resolve(o[k]);
   return o;
 }
@@ -55,6 +58,12 @@ function layoutCheck(S) {
   }
   for (const el of document.querySelectorAll("body *")) {
     if (el.closest("[data-safe-ignore]") || !el.textContent.trim()) continue;
+    // Рамка/плашка элемента с текстом за краем кадра
+    if (el.children.length === 0 && el.checkVisibility({ opacityProperty: true })) {
+      const b = el.getBoundingClientRect();
+      if (b.width > 1 && (b.left < -0.5 || b.top < -0.5 || b.right > W + 0.5 || b.bottom > H + 0.5))
+        out.push({ text: el.textContent.trim().slice(0, 40), problem: "плашка/рамка за краем кадра", box: [b.left, b.top, b.right, b.bottom].map(Math.round) });
+    }
     const cs = getComputedStyle(el);
     if ((cs.overflow === "hidden" || cs.overflowX === "hidden") && el.scrollWidth > el.clientWidth + 1 &&
         el.checkVisibility({ opacityProperty: true }))
