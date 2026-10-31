@@ -1,0 +1,89 @@
+/* FABER — базовый стиль сцен. Описание: docs/style.md */
+
+@font-face { font-family: "Inter"; font-weight: 500; src: url("../assets/fonts/Inter-Medium.otf"); }
+@font-face { font-family: "Inter"; font-weight: 700; src: url("../assets/fonts/Inter-Bold.otf"); }
+@font-face { font-family: "Inter"; font-weight: 800; src: url("../assets/fonts/Inter-ExtraBold.otf"); }
+@font-face { font-family: "FaberMono"; font-weight: 400; src: url("../assets/fonts/DejaVuSansMono.ttf"); }
+@font-face { font-family: "FaberMono"; font-weight: 700; src: url("../assets/fonts/DejaVuSansMono-Bold.ttf"); }
+
+:root {
+  --bg-0: #05080F;
+  --bg-1: #101626;
+  --panel: #1C2438;
+  --slate: #3D4E78;
+  --line: #4A5878;
+  --accent: #FFCA2F;
+  --text: #FFFFFF;
+  --muted: #8C97B3;
+  --bad: #FF4545;
+  --good: #2ED47A;
+  --sans: "Inter", sans-serif;
+  --mono: "FaberMono", monospace;
+}
+
+/* Рендер управляет временем сам: все анимации стоят на паузе и перематываются покадрово. */
+*, *::before, *::after { box-sizing: border-box; animation-fill-mode: both; }
+
+html, body { margin: 0; padding: 0; }
+body {
+  width: 1080px; height: 1920px; overflow: hidden; position: relative;
+  background: radial-gradient(ellipse 90% 70% at 50% 45%, var(--bg-1) 0%, var(--bg-0) 100%);
+  color: var(--text); font-family: var(--sans); font-weight: 800;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Тонкая сетка на фоне, как в опубликованных роликах */
+body::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.scene { position: absolute; inset: 0; }
+
+/* Служебная строка: «ПОЛЬША · ИНСТРУКЦИЯ · ЧАСТЬ 1» */
+.tagline {
+  position: absolute; left: 60px; top: 132px;
+  font-family: var(--mono); font-weight: 700; font-size: 30px; letter-spacing: 2px;
+  color: #C9D1E6; padding-left: 18px; border-left: 6px solid var(--accent);
+}
+
+/* Номер пункта */
+.badge {
+  position: absolute; left: 50%; top: 250px; transform: translateX(-50%);
+  background: var(--accent); color: #11151F; border-radius: 16px;
+  font-family: var(--mono); font-weight: 700; font-size: 92px; line-height: 1;
+  padding: 18px 30px;
+}
+
+/* Зона иллюстрации */
+.stage { position: absolute; left: 90px; right: 90px; top: 440px; height: 720px;
+  display: flex; align-items: center; justify-content: center; }
+
+/* Субтитры: максимум 2 строки, внутри безопасной зоны */
+.sub {
+  position: absolute; left: 110px; right: 160px; top: 1250px;
+  text-align: center; font-size: 64px; line-height: 1.15; letter-spacing: -0.5px;
+}
+.sub b, .accent { color: var(--accent); font-weight: 800; }
+.bad { color: var(--bad); }
+.good { color: var(--good); }
+
+/* Карточки / телефон */
+.panel { background: var(--panel); border: 3px solid var(--line); border-radius: 36px; }
+.mono { font-family: var(--mono); font-weight: 700; }
+
+/* Штамп «УВОЛЬНЕНИЕ», «ДОКАЗАТЕЛЬСТВО» */
+.stamp {
+  display: inline-block; font-family: var(--mono); font-weight: 700; font-size: 44px;
+  padding: 8px 22px; border: 6px solid currentColor; border-radius: 10px;
+  transform: rotate(-8deg); text-transform: uppercase;
+}
+
+/* Финальная плашка CTA */
+.cta-pill {
+  display: inline-block; background: #fff; color: #11151F; border-radius: 999px;
+  font-size: 48px; font-weight: 800; padding: 22px 48px;
+}

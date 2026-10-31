@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="duration" content="8">
+<!-- Тестовая сцена конвейера: проверяет стиль, анимации, субтитры, счётчик и финальный кадр. Не для публикации. -->
+<link rel="stylesheet" href="../../styles/faber.css">
+<style>
+  .phone { width: 420px; height: 640px; padding: 40px 36px; position: relative; }
+  .norm { display: flex; justify-content: space-between; font-size: 30px; color: var(--good); }
+  .norm span:last-child { font-size: 40px; }
+  .bar { margin-top: 60px; height: 26px; border-radius: 13px; background: #0F1526; overflow: hidden; }
+  .bar i { display: block; height: 100%; width: 80%; background: var(--accent); transform-origin: left; }
+  .idle { margin-top: 70px; background: var(--bad); color: #fff; font-size: 30px; text-align: center; padding: 14px; border-radius: 10px; }
+  .end { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 60px; }
+  .end h1 { margin: 0; font-size: 110px; line-height: 1.02; text-align: center; letter-spacing: -2px; }
+</style>
+</head>
+<body>
+  <div class="scene" id="s1">
+    <div class="tagline">ТЕСТ · КОНВЕЙЕР · FABER</div>
+    <div class="badge" id="b1">01</div>
+    <div class="stage">
+      <div class="panel phone" id="phone">
+        <div class="norm mono"><span>NORMA</span><span id="cnt">0/150</span></div>
+        <div class="bar"><i id="bar"></i></div>
+        <div class="idle mono" id="idle">PRZESTÓJ 00:04:08</div>
+      </div>
+    </div>
+  </div>
+  <div class="end" id="end">
+    <h1>Проверь<br><span class="accent">до выезда.</span></h1>
+    <div class="cta-pill">TG @faber_work</div>
+  </div>
+
+<script src="../../render/faber.js"></script>
+<script>
+  F.show("#s1", 0, 5.6);
+  F.show("#b1", 0.2, 5.6, { enter: "pop" });
+  F.show("#phone", 0.4, 5.6, { enter: "up", dur: 0.4 });
+  F.counter("#cnt", 0, 147, 0.6, 3.2, (v) => `${Math.round(v)}/150`);
+  document.querySelector("#bar").animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+    { delay: 600, duration: 2600, fill: "both", easing: "ease-out" });
+  F.show("#idle", 3.4, 5.6, { enter: "stamp", dur: 0.2 });
+  F.subs([
+    [0.3, 2.2, "Сканер считает <b>каждую позицию.</b>"],
+    [2.3, 3.3, "Каждую минуту."],
+    [3.4, 5.5, "Стоишь без дела — <b>это видно.</b>"],
+  ]);
+  F.show("#end", 5.7, 8, { enter: "up", dur: 0.35 });
+</script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "name": "faberwork",
+  "private": true,
+  "description": "FABER WORK — производство коротких вертикальных видео (HTML/SVG → Playwright → FFmpeg)",
+  "scripts": {
+    "render": "node render/render.js",
+    "test-render": "node render/render.js videos/000_test/scene.html"
+  },
+  "dependencies": {
+    "playwright": "^1.63.0"
+  }
+}
