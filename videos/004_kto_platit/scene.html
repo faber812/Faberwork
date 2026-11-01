@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<!-- Тайминги реплик — из timing.js (node render/cues.js voice.mp3 lines.txt --tail 2.8). -->
+<meta name="duration" content="33">
+<link rel="stylesheet" href="../../styles/faber.css">
+<style>
+  .center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+
+  /* 1–2. Чек */
+  .receipt { position: absolute; left: 210px; width: 600px; top: 440px; background: #F2EFE6; color: #1A1F2B; border-radius: 6px;
+             padding: 44px 46px 50px; font-family: var(--mono); font-weight: 700; box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+  .receipt .hd { text-align: center; font-size: 30px; letter-spacing: 3px; color: #6B6F7A; margin-bottom: 26px; }
+  .receipt .ln { display: flex; justify-content: space-between; font-size: 32px; padding: 14px 0; border-bottom: 2px dashed #C8C3B4; }
+  .receipt .tot { display: flex; justify-content: space-between; font-size: 34px; margin-top: 26px; position: relative; }
+  .tot .who { color: var(--bad); }
+  .tot .who2 { color: #13A35C; position: absolute; right: 0; top: 46px; }
+  .strike { position: absolute; right: -6px; top: 20px; height: 6px; width: 150px; background: var(--bad); transform-origin: left; }
+  .umowa { position: absolute; left: 0; right: 120px; margin: 0 auto; width: fit-content; top: 1000px; color: var(--accent); font-size: 50px; }
+
+  /* 3–5. Пункты */
+  .item { position: absolute; left: 90px; right: 90px; top: 440px; height: 700px; display: flex; flex-direction: column; align-items: center; }
+  .item svg { margin-top: 30px; }
+  .item h2 { margin: 40px 0 6px; font-size: 76px; letter-spacing: -1px; }
+  .item .pl { font-family: var(--mono); font-weight: 400; font-size: 32px; color: var(--muted); }
+  .chip { margin-top: 44px; background: rgba(46,212,122,.12); border: 3px solid var(--good); color: var(--good); border-radius: 18px; padding: 18px 30px; font-size: 40px; text-align: center; max-width: 720px; line-height: 1.2; }
+
+  /* 6. Сравнение */
+  .cols { position: absolute; left: 80px; right: 160px; top: 480px; display: flex; gap: 30px; }
+  .col { flex: 1; padding: 44px 30px; text-align: center; }
+  .col .t { font-family: var(--mono); font-size: 36px; }
+  .col .ic { width: 110px; height: 110px; border-radius: 50%; margin: 40px auto 30px; display: grid; place-items: center; font-size: 64px; color: #11151F; }
+  .col .d { font-size: 36px; line-height: 1.2; }
+  .col.a .ic { background: var(--good); } .col.b .ic { background: var(--accent); }
+  .col.b { border-color: var(--accent); }
+
+  /* 7. Сохрани + финал */
+  .save { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; padding-bottom: 260px; }
+  .save .w { font-size: 84px; }
+  .end h1 { margin: 0; font-size: 96px; line-height: 1.05; text-align: center; letter-spacing: -2px; }
+</style>
+</head>
+<body>
+<div class="tagline" id="tag">ПЕРВАЯ СМЕНА · ЗА ЧЕЙ СЧЁТ</div>
+
+<!-- 1–2 -->
+<div id="s1" class="scene">
+  <div class="receipt" id="rc">
+    <div class="hd">PARAGON</div>
+    <div class="ln" id="l1"><span>BUTY ROBOCZE</span><span>?? zł</span></div>
+    <div class="ln" id="l2"><span>BADANIA LEKARSKIE</span><span>?? zł</span></div>
+    <div class="ln" id="l3"><span>SZKOLENIE BHP</span><span>?? zł</span></div>
+    <div class="tot"><span>PŁACI:</span><span class="who" id="w1">TY</span><i class="strike" id="sk"></i><span class="who2" id="w2">PRACODAWCA</span></div>
+  </div>
+  <div class="stamp umowa" id="um">Umowa o pracę</div>
+</div>
+
+<!-- 3 -->
+<div id="s3" class="scene">
+  <div class="badge">01</div>
+  <div class="item">
+    <svg width="200" height="240" viewBox="0 0 200 240"><rect x="20" y="10" width="160" height="220" rx="14" fill="#1C2438" stroke="#FFCA2F" stroke-width="8"/>
+      <line x1="50" y1="60" x2="150" y2="60" stroke="#8C97B3" stroke-width="8"/><line x1="50" y1="95" x2="150" y2="95" stroke="#8C97B3" stroke-width="8"/>
+      <line x1="50" y1="130" x2="120" y2="130" stroke="#8C97B3" stroke-width="8"/><path d="M80 180 h40 M100 160 v40" stroke="#FF4545" stroke-width="12"/></svg>
+    <h2>Медосмотр</h2><div class="pl">badania lekarskie</div>
+    <div class="chip" id="c3">Направление и оплата — работодатель</div>
+  </div>
+</div>
+
+<!-- 4 -->
+<div id="s4" class="scene">
+  <div class="badge">02</div>
+  <div class="item">
+    <svg width="230" height="230" viewBox="0 0 230 230"><circle cx="115" cy="115" r="100" fill="#1C2438" stroke="#FFCA2F" stroke-width="8"/>
+      <line x1="115" y1="115" x2="115" y2="55" stroke="#fff" stroke-width="10" stroke-linecap="round"/><line id="hand" x1="115" y1="115" x2="160" y2="140" stroke="#FFCA2F" stroke-width="10" stroke-linecap="round"/></svg>
+    <h2>Инструктаж BHP</h2><div class="pl">szkolenie wstępne BHP</div>
+    <div class="chip" id="c4">До работы · в рабочее время · 0 zł</div>
+  </div>
+</div>
+
+<!-- 5 -->
+<div id="s5" class="scene">
+  <div class="badge">03</div>
+  <div class="item">
+    <svg width="260" height="220" viewBox="0 0 260 220"><path d="M40 30 h80 v90 l90 30 q30 10 30 40 v20 H40 Z" fill="#1C2438" stroke="#FFCA2F" stroke-width="8" stroke-linejoin="round"/>
+      <rect x="150" y="150" width="80" height="40" rx="10" fill="#FFCA2F"/></svg>
+    <h2>Обувь и одежда</h2><div class="pl">obuwie i odzież robocza</div>
+    <div class="chip" id="c5">Бесплатно или компенсация</div>
+  </div>
+</div>
+
+<!-- 6 -->
+<div id="s6" class="scene">
+  <div class="cols">
+    <div class="panel col a" id="ca"><div class="t">Umowa<br>o pracę</div><div class="ic">✓</div><div class="d">Всё это —<br>за счёт работодателя</div></div>
+    <div class="panel col b" id="cb"><div class="t">Umowa<br>zlecenie</div><div class="ic">?</div><div class="d">Правила другие —<br>уточняй до подписания</div></div>
+  </div>
+</div>
+
+<!-- 7 -->
+<div id="s7" class="save">
+  <svg width="170" height="210" viewBox="0 0 170 210"><path d="M20 10 h130 v190 l-65 -50 l-65 50 Z" fill="none" stroke="#FFCA2F" stroke-width="12" stroke-linejoin="round"/></svg>
+  <div class="w">Сохрани</div>
+</div>
+<div id="s8" class="center end">
+  <h1>А у тебя<br><span class="accent">какой договор?</span></h1>
+  <div class="cta-pill" id="pill" style="margin-top:70px">Напиши в комментах</div>
+</div>
+
+<script src="timing.js"></script>
+<script src="../../render/faber.js"></script>
+<script>
+  let C = [0, 4.3, 8.8, 13.3, 17.8, 23.6, 28.4], DUR = 33, VL = 31.4;
+  if (window.__CUES__) { C = window.__CUES__.starts; DUR = window.__CUES__.duration; VL = window.__CUES__.voiceLength; }
+  document.querySelector('meta[name="duration"]').content = DUR;
+  const S = C.concat([VL + 0.15, DUR]);   // S[7] — финальный экран после голоса
+  const end = (i) => S[i + 1] - 0.05;
+  const d = (i) => S[i + 1] - S[i];
+
+  F.show("#tag", 0, end(5));
+
+  // 1–2. Чек, затем «обнуление»
+  F.show("#s1", 0, end(1));
+  F.show("#rc", 0.05, end(1), { enter: "up", dur: 0.35 });
+  ["#l1", "#l2", "#l3"].forEach((id, i) => F.show(id, 0.35 + i * 0.35, end(1), { enter: "fade", dur: 0.15 }));
+  F.show("#um", S[1] + 0.1, end(1), { enter: "stamp", dur: 0.22 });
+  document.querySelector("#sk").animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }],
+    { delay: (S[1] + d(1) * 0.45) * 1000, duration: 250, fill: "both" });
+  F.show("#w2", S[1] + d(1) * 0.55, end(1), { enter: "pop" });
+
+  // 3–5. Пункты
+  F.show("#s3", S[2], end(2), { enter: "up", dur: 0.3 });
+  F.show("#c3", S[2] + d(2) * 0.4, end(2), { enter: "pop" });
+  F.show("#s4", S[3], end(3), { enter: "up", dur: 0.3 });
+  F.show("#c4", S[3] + d(3) * 0.35, end(3), { enter: "pop" });
+  document.querySelector("#hand").animate([{ transform: "rotate(0deg)" }, { transform: "rotate(360deg)" }],
+    { delay: S[3] * 1000, duration: d(3) * 1000, fill: "both", transformOrigin: "115px 115px" });
+  document.querySelector("#hand").style.transformOrigin = "115px 115px";
+  F.show("#s5", S[4], end(4), { enter: "up", dur: 0.3 });
+  F.show("#c5", S[4] + d(4) * 0.5, end(4), { enter: "pop" });
+
+  // 6. Сравнение
+  F.show("#s6", S[5], end(5));
+  F.show("#ca", S[5] + 0.05, end(5), { enter: "up" });
+  F.show("#cb", S[5] + d(5) * 0.25, end(5), { enter: "up" });
+
+  // 7. Сохрани → финал
+  F.show("#s7", S[6], end(6), { enter: "pop", dur: 0.3 });
+  F.show("#s8", S[7], DUR, { enter: "up", dur: 0.3 });
+  F.show("#pill", S[7] + 0.4, DUR, { enter: "pop" });
+
+  F.subs([
+    [S[0], end(0), "Купил ботинки и медосмотр <b>за свои?</b>"],
+    [S[1], end(1), "На umowa o pracę платит <b>работодатель.</b>"],
+    [S[5], end(5), "На zlecenie — <b>уточняй до подписания.</b>"],
+    [S[6], end(6), "Чтобы не платить <b>лишнее.</b>"],
+  ]);
+</script>
+</body>
+</html>
