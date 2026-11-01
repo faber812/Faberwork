@@ -2,7 +2,7 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<!-- Длительность и тайминги реплик подставляются из cues.json (их считает render/cues.js по паузам в voice.mp3).
+<!-- Длительность и тайминги реплик подставляются из timing.js (node render/cues.js voice.mp3 lines.txt).
      Пока озвучки нет — используются значения по умолчанию ниже. -->
 <meta name="duration" content="29">
 <link rel="stylesheet" href="../../styles/faber.css">
@@ -20,7 +20,7 @@
   /* 2. Хаос поиска */
   .chip { position: absolute; background: var(--panel); border: 3px solid var(--line); border-radius: 22px; padding: 22px 36px; font-size: 62px; }
   .chip.y { border-color: var(--accent); }
-  .stamp-big { position: absolute; left: 150px; top: 900px; color: var(--bad); font-size: 52px; white-space: nowrap; }
+  .stamp-big { position: absolute; left: 0; right: 100px; margin: 0 auto; width: fit-content; top: 900px; color: var(--bad); font-size: 46px; white-space: nowrap; }
 
   /* 3. Чат */
   .phone { position: absolute; left: 190px; top: 440px; width: 700px; height: 760px; padding: 0; overflow: hidden; }
@@ -129,14 +129,12 @@
   <div class="cta-pill" id="pill" style="margin-top:70px">TG @faber_work</div>
 </div>
 
+<script src="timing.js"></script>
 <script src="../../render/faber.js"></script>
 <script>
-  // Начала реплик (с), длительность. Подставляются из cues.json, если он есть.
+  // Начала реплик (с) и длительность. Берутся из timing.js (render/cues.js), иначе — значения ниже.
   let C = [0.15, 3.7, 7.6, 10.4, 11.9, 17.6, 21.6, 26.2], DUR = 29;
-  try {
-    const x = new XMLHttpRequest(); x.open("GET", "cues.json", false); x.send();
-    if (x.status === 200 || x.status === 0) { const j = JSON.parse(x.responseText); C = j.starts; DUR = j.duration; }
-  } catch (e) {}
+  if (window.__CUES__) { C = window.__CUES__.starts; DUR = window.__CUES__.duration; }
   document.querySelector('meta[name="duration"]').content = DUR;
 
   // Склонение «день»
@@ -162,7 +160,7 @@
   F.show("#s2", S[1], end(1));
   const d2 = S[2] - S[1];
   ["#c1", "#c2", "#c3"].forEach((id, i) => F.show(id, S[1] + d2 * (0.02 + i * 0.2), end(1), { enter: "pop", dur: 0.22 }));
-  F.show("#c4", S[1] + d2 * 0.62, end(1), { enter: "stamp", dur: 0.2 });
+  F.show("#c4", S[1] + d2 * 0.66, end(1), { enter: "stamp", dur: 0.2 });
 
   // 3. Чат без ответа
   F.show("#s3", S[2], end(2));
@@ -199,8 +197,8 @@
   F.show("#i1", S[6] + 0.05, end(6), { enter: "up" });
   F.show("#i2", S[6] + 0.25, end(6), { enter: "up" });
   F.show("#trk", S[6] + d7 * 0.4, end(6), { enter: "fade" });
-  F.show("#pa", S[6] + d7 * 0.45, end(6), { enter: "pop" });
-  F.show("#pb", S[6] + d7 * 0.72, end(6), { enter: "pop" });
+  F.show("#pa", S[6] + d7 * 0.6, end(6), { enter: "pop" });
+  F.show("#pb", S[6] + d7 * 0.8, end(6), { enter: "pop" });
 
   // 8. Финал
   F.show("#s8", S[7], DUR, { enter: "up", dur: 0.3 });

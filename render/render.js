@@ -133,10 +133,16 @@ function loudness(file) {
   if (o.voice || o.music) {
     const parts = [], labels = [];
     let idx = 1;
-    if (o.voice) { inputs.push("-i", o.voice); parts.push(`[${idx}:a]aresample=48000,apad[v]`); labels.push("[v]"); idx++; }
+    if (o.voice) { inputs.push("-i", o.voice); parts.push(`[${idx}:a]aresample=48000,acompressor=threshold=-22dB:ratio=3:attack=5:release=120:makeup=2,apad[v]`); labels.push("[v]"); idx++; }
     if (o.music) { inputs.push("-stream_loop", "-1", "-i", o.music); parts.push(`[${idx}:a]aresample=48000,volume=${o.voice ? "-20dB" : "0dB"}[m]`); labels.push("[m]"); }
     const mix = labels.length > 1 ? `${labels.join("")}amix=inputs=2:duration=first:normalize=0[mx];[mx]` : `${labels[0]}`;
-    filter = `${parts.join(";")};${mix}loudnorm=I=${LUFS}:TP=-1.5:LRA=11,atrim=0:${duration},afade=t=out:st=${Math.max(0, duration - 0.3)}:d=0.3[a]`;
+    const pre = `${parts.join(";")};${mix}atrim=0:${duration}`;
+    // Проход 1: замер громкости. Проход 2: точная нормализация по замеру.
+    const r1 = require("child_process").spawnSync("ffmpeg", ["-hide_banner", "-nostats", ...inputs.slice(2), "-filter_complex",
+      pre.replace(/\[(\d+):a\]/g, (m, d) => `[${Number(d) - 1}:a]`) + `,loudnorm=I=${LUFS}:TP=-1.5:LRA=11:print_format=json`, "-f", "null", "-"]);
+    const m = JSON.parse(r1.stderr.toString().match(/\{[^{}]*"input_i"[^{}]*\}/)[0]);
+    const ln = `loudnorm=I=${LUFS}:TP=-1.5:LRA=11:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true`;
+    filter = `${pre},${ln},afade=t=out:st=${Math.max(0, duration - 0.3)}:d=0.3[a]`;
   } else {
     inputs.push("-f", "lavfi", "-i", "anullsrc=r=48000:cl=stereo");
     filter = `[1:a]atrim=0:${duration}[a]`;
@@ -158,6 +164,10 @@ function loudness(file) {
   const loud = o.voice || o.music ? loudness(o.out) : { lufs: null, truePeak: null, note: "без звука" };
   if (loud.lufs !== null && Math.abs(loud.lufs - LUFS) > 1.5) fail.push(`громкость ${loud.lufs} LUFS, цель ${LUFS}`);
   const warn = [];
+  if (o.voice) {
+    const vl = Number(execFileSync("ffprobe", ["-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", o.voice]).toString());
+    if (vl > duration + 0.05) fail.push(`озвучка ${vl.toFixed(2)} с длиннее ролика ${duration} с — голос обрезан (нет timing.js?)`);
+  }
   if (duration < 20 || duration > 40) warn.push(`длительность ${duration} с вне ориентира 25–35 с`);
 
   // Раскадровка 12 кадров + последний кадр

@@ -11,7 +11,7 @@
     fade: [{ opacity: 0 }, { opacity: 1 }],
     up: [{ opacity: 0, transform: "translateY(40px)" }, { opacity: 1, transform: "translateY(0)" }],
     pop: [{ opacity: 0, transform: "scale(.6)" }, { opacity: 1, transform: "scale(1.08)", offset: 0.7 }, { opacity: 1, transform: "scale(1)" }],
-    stamp: [{ opacity: 0, transform: "scale(2.2) rotate(-8deg)" }, { opacity: 1, transform: "scale(1) rotate(-8deg)" }],
+    stamp: [{ opacity: 0, transform: "scale(1.4) rotate(-8deg)" }, { opacity: 1, transform: "scale(1) rotate(-8deg)" }],
   };
 
   // Показать элемент с start до end (секунды). enter — тип появления, dur — длительность появления.
